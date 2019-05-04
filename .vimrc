@@ -1,15 +1,21 @@
 set nocompatible
 set keymodel=startsel
 set encoding=UTF-8
+set splitbelow
 
 execute pathogen#infect()
 syntax on
 filetype plugin indent on
 
-nnoremap <C-x> :bd<CR>
-inoremap <C-x> <c-o>:bd<CR>
-nnoremap <F3> :bd<CR>
-inoremap <F3> <c-o>:bd<CR>
+nnoremap <F3> :q<CR>
+inoremap <F3> <c-o>:q<CR
+nnoremap <F4> :q<CR>
+inoremap <F4> <c-o>:q<CR>
+nnoremap <F5> :w<CR>
+inoremap <F5> <c-o>:w<CR>
+
+nnoremap <S-B> :Break<CR>
+nnoremap <S-C> :Clear<CR>
 
 " Git
 nnoremap <F2> :Gstatus<CR>
@@ -17,10 +23,34 @@ inoremap <F2> <c-o>:Gstatus<CR>
 nnoremap <F1> :Gdiff<CR>
 inoremap <F1> <c-o>:Gdiff<CR>
 
-" Copy paste
-set pastetoggle=<F10>
-inoremap <C-v> <F10><C-r>+<F10>
-vnoremap <C-c> "+y
+" CTRL-X and SHIFT-Del are Cut
+vnoremap <C-X> "+x
+vnoremap <S-Del> "+x
+
+" CTRL-C and CTRL-Insert are Copy
+vnoremap <C-C> "+y
+vnoremap <C-Insert> "+y
+
+" CTRL-V and SHIFT-Insert are Paste
+map <C-V>       "+gP
+map <S-Insert>      "+gP
+
+cmap <C-V>      <C-R>+
+cmap <S-Insert>     <C-R>+
+
+" Pasting blockwise and linewise selections is not possible in Insert and
+" Visual mode without the +virtualedit feature.  They are pasted as if they
+" were characterwise instead.
+" Uses the paste.vim autoload script.
+
+exe 'inoremap <script> <C-V>' paste#paste_cmd['i']
+exe 'vnoremap <script> <C-V>' paste#paste_cmd['v']
+
+imap <S-Insert>     <C-V>
+vmap <S-Insert>     <C-V>
+
+" Use CTRL-Q to do what CTRL-V used to do
+noremap <C-Q>       <C-V>
 
 " Undo
 nnoremap <c-z> :u<CR>
@@ -30,8 +60,8 @@ map <C-o> :NERDTreeToggle<CR>
 autocmd BufWinEnter * NERDTreeMirror
 
 " Save
-nmap <c-s> :w<CR>
-imap <c-s> <Esc>:w<CR>
+nmap <c-d> :w<CR>
+imap <c-d> <Esc>:w<CR>
 nmap <c-s-s> :wa<CR>
 imap <c-s-s> <Esc>:wa<CR>
 
@@ -52,9 +82,6 @@ let g:ale_completion_enabled = 1
 
 " deoplete
 let g:deoplete#enable_at_startup = 1
-
-" neosnippet        
-let g:neosnippet#enable_completed_snippet = 1
 
 " air-line
 let g:airline_powerline_fonts = 1
@@ -106,6 +133,8 @@ call plug#begin()
   Plug 'mxw/vim-jsx'
   Plug 'w0rp/ale'
   Plug 'scrooloose/nerdtree'
+    autocmd BufWritePost * NERDTreeFocus | execute 'normal R' | wincmd p
+	au VimEnter * NERDTree
   Plug 'Xuyuanp/nerdtree-git-plugin'
   Plug 'vim-airline/vim-airline'
   Plug 'ntpeters/vim-better-whitespace'
@@ -116,17 +145,19 @@ call plug#begin()
   else
 	Plug 'Shougo/deoplete.nvim'
 	Plug 'roxma/nvim-yarp'
+	Plug 'deoplete-plugins/deoplete-clang'
 	Plug 'roxma/vim-hug-neovim-rpc'
   endif
   " For func argument completion
-  Plug 'Shougo/neosnippet'
-  Plug 'Shougo/neosnippet-snippets'
+  Plug 'ryanoasis/vim-devicons'
+    let g:WebDevIconsNerdTreeBeforeGlyphPadding = ' '
+    let g:WebDevIconsNerdTreeAfterGlyphPadding = ' '
+	let g:WebDevIconsUnicodeDecorateFolderNodes = 1
+    let g:WebDevIconsUnicodeDecorateFolderNodeDefaultSymbol = ''
+    let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols = {}
+    let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['nerdtree'] = ''
 call plug#end()
 
-" autocmd VimEnter * call NERDTreeAddKeyMap({ 'key': '<2-LeftMouse>', 'scope': "FileNode", 'callback': "OpenInTab", 'override':1 })
-" function! OpenInTab(node)
-"	call a:node.activate({'reuse': 'all', 'where': 't'})
-" endfunction
-" let g:NERDTreeMapOpenInTab = '<2-LeftMouse>'
+au VimEnter * packadd termdebug
 
 colorscheme codedark
