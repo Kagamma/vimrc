@@ -122,6 +122,7 @@ set statusline+=%{exists('g:loaded_fugitive')?fugitive#statusline():''}
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 set termguicolors
 syntax enable
+let g:python3_host_prog='/bin/python2.7'
 
 call plug#begin()
   if has('nvim')
@@ -131,12 +132,11 @@ call plug#begin()
   Plug 'tomasiser/vim-code-dark'
   Plug 'pangloss/vim-javascript'
   Plug 'mxw/vim-jsx'
-  Plug 'w0rp/ale'
   Plug 'scrooloose/nerdtree'
     autocmd BufWritePost * NERDTreeFocus | execute 'normal R' | wincmd p
 	au VimEnter * NERDTree
 	" Check if NERDTree is open or active
-	function! IsNERDTreeOpen()        
+	function! IsNERDTreeOpen()
 	  return exists("t:NERDTreeBufName") && (bufwinnr(t:NERDTreeBufName) != -1)
 	endfunction
 
@@ -156,13 +156,15 @@ call plug#begin()
   Plug 'ntpeters/vim-better-whitespace'
   Plug 'tpope/vim-fugitive'
   Plug 'mhinz/vim-signify'
+  Plug 'Valloric/YouCompleteMe'
+  Plug 'w0rp/ale'
   if has('nvim')
-    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
   else
-	Plug 'Shougo/deoplete.nvim'
-	Plug 'roxma/nvim-yarp'
-	Plug 'deoplete-plugins/deoplete-clang'
-	Plug 'roxma/vim-hug-neovim-rpc'
+   " Plug 'roxma/vim-hug-neovim-rpc'
+   " Plug 'roxma/nvim-yarp'
+   " Plug 'Shougo/deoplete.nvim'
+   " Plug 'deoplete-plugins/deoplete-clang'
   endif
   " For func argument completion
   Plug 'ryanoasis/vim-devicons'
