@@ -157,6 +157,8 @@ call plug#begin()
   Plug 'ntpeters/vim-better-whitespace'
   Plug 'tpope/vim-fugitive'
   Plug 'mhinz/vim-signify'
+  " Plug 'severin-lemaignan/vim-minimap'
+  Plug 'mhinz/vim-grepper'
   Plug 'Valloric/YouCompleteMe'
   Plug 'w0rp/ale'
   if has('nvim')
