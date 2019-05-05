@@ -151,6 +151,7 @@ call plug#begin()
 
 	" Highlight currently open buffer in NERDTree
 	autocmd BufEnter * call SyncTree()
+  Plug 'jistr/vim-nerdtree-tabs'
   Plug 'Xuyuanp/nerdtree-git-plugin'
   Plug 'vim-airline/vim-airline'
   Plug 'ntpeters/vim-better-whitespace'
